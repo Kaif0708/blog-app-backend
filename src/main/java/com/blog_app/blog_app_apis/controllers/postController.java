@@ -1,5 +1,6 @@
 package com.blog_app.blog_app_apis.controllers;
 
+import com.blog_app.blog_app_apis.config.AppConstants;
 import com.blog_app.blog_app_apis.payloads.ApiResponse;
 import com.blog_app.blog_app_apis.payloads.PostDto;
 import com.blog_app.blog_app_apis.payloads.PostResponse;
@@ -35,10 +36,10 @@ public class postController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                                                    @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
-                                                    @RequestParam(value="sortBy",defaultValue = "postId",required = false) String sortBy,
-                                                    @RequestParam(value="sortDir",defaultValue = "asc",required = false) String sortDir){
+    public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                    @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                    @RequestParam(value="sortBy",defaultValue = AppConstants.SORT_BY,required = false) String sortBy,
+                                                    @RequestParam(value="sortDir",defaultValue = AppConstants.SORT_ORDER,required = false) String sortDir){
         PostResponse allPosts=this.postService.getAllPosts(pageNumber,pageSize,sortBy,sortDir);
         return ResponseEntity.ok(allPosts);
     }
@@ -56,6 +57,12 @@ public class postController {
     public ApiResponse deletePost(@PathVariable Integer postId){
         this.postService.deletePost(postId);
         return new ApiResponse("Post deleted",true);
+    }
+    @GetMapping("/posts/search/{keyword}")
+    public ResponseEntity<List<PostDto>> searchPostByTitle(@PathVariable String keyword){
+        List<PostDto> postDto=this.postService.searchPosts(keyword);
+        return ResponseEntity.ok(postDto);
+
     }
 
 
