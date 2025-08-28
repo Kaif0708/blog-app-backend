@@ -1,9 +1,13 @@
 package com.blog_app.blog_app_apis.payloads;
 
+import com.blog_app.blog_app_apis.entities.Role;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -26,5 +30,7 @@ public class UserDto {
 
     @NotNull
     private String about;
+
+    private Set<Role> roles=new HashSet<>();
 
 }
