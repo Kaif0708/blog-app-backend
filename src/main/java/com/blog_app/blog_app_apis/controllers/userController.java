@@ -3,6 +3,7 @@ package com.blog_app.blog_app_apis.controllers;
 import com.blog_app.blog_app_apis.payloads.ApiResponse;
 import com.blog_app.blog_app_apis.payloads.UserDto;
 import com.blog_app.blog_app_apis.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,7 @@ public class userController {
     }
     //DELETE- delete  user
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Integer userId){
         this.userService.deleteUser(userId);

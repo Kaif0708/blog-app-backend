@@ -22,10 +22,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtTokenHelper jwtTokenHelper;
+    private static final String[] WHITELIST = {
+            "/api/v1/auth/",
+            "/v3/api-docs",
+            "/v2/api-docs/",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
+
+        for (String uri : WHITELIST) {
+            if (path.startsWith(uri.replace("**",""))) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
         if (path.startsWith("/api/v1/auth/login")) {
             filterChain.doFilter(request, response);
             return;
